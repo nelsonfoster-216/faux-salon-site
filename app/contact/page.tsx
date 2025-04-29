@@ -1,17 +1,11 @@
 "use client"
 
-import type { Metadata } from "next"
 import ContactForm from "@/components/contact/contact-form"
 import ContactInfo from "@/components/contact/contact-info"
 import dynamic from "next/dynamic"
 
 // Dynamically import the map component with no SSR
 const LocationMap = dynamic(() => import("@/components/contact/location-map"), { ssr: false })
-
-export const metadata: Metadata = {
-  title: "Contact Us - Crown & Glory Salon",
-  description: "Get in touch with Crown & Glory Salon. Find our location, contact information, and business hours.",
-}
 
 export default function ContactPage() {
   return (

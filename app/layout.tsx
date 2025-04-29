@@ -14,6 +14,7 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://crown-glory-salon.com'),
   title: "Crown & Glory Salon - Beauty for All",
   description:
     "Premier unisex salon in Cleveland, Ohio offering haircuts, styling, nail care, beauty treatments, and makeup services for men and women.",
