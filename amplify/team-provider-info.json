@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fauxsalonsite-dev-1402e-authRole",
+      "UnauthRoleArn": "arn:aws:iam::898456252750:role/amplify-fauxsalonsite-dev-1402e-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::898456252750:role/amplify-fauxsalonsite-dev-1402e-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-fauxsalonsite-dev-1402e-deployment",
+      "UnauthRoleName": "amplify-fauxsalonsite-dev-1402e-unauthRole",
+      "StackName": "amplify-fauxsalonsite-dev-1402e",
+      "StackId": "arn:aws:cloudformation:us-east-2:898456252750:stack/amplify-fauxsalonsite-dev-1402e/be631880-2542-11f0-8949-06eaa3a48f3b",
+      "AmplifyAppId": "d3pcnrlmmrx7p0"
+    }
+  }
+}
