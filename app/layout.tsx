@@ -13,8 +13,13 @@ const poppins = Poppins({
   variable: "--font-poppins",
 })
 
+// Use a dynamic metadataBase that works in all environments
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
+                process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
+                'https://main.d33dnt609ym1xw.amplifyapp.com';
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://crown-glory-salon.com'),
+  metadataBase: new URL(baseUrl),
   title: "Crown & Glory Salon - Beauty for All",
   description:
     "Premier unisex salon in Cleveland, Ohio offering haircuts, styling, nail care, beauty treatments, and makeup services for men and women.",
@@ -39,9 +44,27 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  // Add client-side error logging
+  if (typeof window !== "undefined") {
+    console.log("Debug: Layout component rendered on client");
+    // Add error handler to catch and log errors
+    window.addEventListener('error', (event) => {
+      console.error('Uncaught error:', event.error);
+    });
+  }
+
   return (
     <html lang="en">
       <body className={`${poppins.variable} font-sans`}>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            console.log("Debug: Initial script execution");
+            window.onerror = function(message, source, lineno, colno, error) {
+              console.error("Global error:", {message, source, lineno, colno, error});
+              return false;
+            };
+          `
+        }}/>
         <GoogleAnalytics />
         <Header />
         <main>{children}</main>
