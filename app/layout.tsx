@@ -44,27 +44,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Add client-side error logging
-  if (typeof window !== "undefined") {
-    console.log("Debug: Layout component rendered on client");
-    // Add error handler to catch and log errors
-    window.addEventListener('error', (event) => {
-      console.error('Uncaught error:', event.error);
-    });
-  }
-
   return (
     <html lang="en">
       <body className={`${poppins.variable} font-sans`}>
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            console.log("Debug: Initial script execution");
-            window.onerror = function(message, source, lineno, colno, error) {
-              console.error("Global error:", {message, source, lineno, colno, error});
-              return false;
-            };
-          `
-        }}/>
         <GoogleAnalytics />
         <Header />
         <main>{children}</main>

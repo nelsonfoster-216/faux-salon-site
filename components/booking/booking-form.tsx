@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect, Suspense } from "react"
+import { useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { Calendar } from "@/components/ui/calendar"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -68,30 +68,8 @@ const timeSlots = [
   "7:30 PM",
 ]
 
-// Component to handle search params inside Suspense
-function BookingParams({ onServiceSelect }: { onServiceSelect: (service: string) => void }) {
-  const searchParams = useSearchParams()
-  
-  useEffect(() => {
-    const serviceParam = searchParams.get("service")
-    if (serviceParam) {
-      // Find the matching service in our categories
-      for (const category of serviceCategories) {
-        const matchingService = category.options.find((option) =>
-          option.label.toLowerCase().includes(serviceParam.toLowerCase()),
-        )
-        if (matchingService) {
-          onServiceSelect(matchingService.value)
-          break
-        }
-      }
-    }
-  }, [searchParams, onServiceSelect])
-  
-  return null
-}
-
 export default function BookingForm() {
+  const searchParams = useSearchParams()
   const [date, setDate] = useState<Date | undefined>(undefined)
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>("")
   const [selectedService, setSelectedService] = useState<string>("")
@@ -101,6 +79,23 @@ export default function BookingForm() {
   const [whatsappConfirm, setWhatsappConfirm] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+
+  // Set initial service from URL query parameter
+  useEffect(() => {
+    const serviceParam = searchParams.get("service")
+    if (serviceParam) {
+      // Find the matching service in our categories
+      for (const category of serviceCategories) {
+        const matchingService = category.options.find((option) =>
+          option.label.toLowerCase().includes(serviceParam.toLowerCase()),
+        )
+        if (matchingService) {
+          setSelectedService(matchingService.value)
+          break
+        }
+      }
+    }
+  }, [searchParams])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -126,9 +121,6 @@ export default function BookingForm() {
 
   return (
     <Card className="max-w-3xl mx-auto shadow-salon border-0 hover:shadow-lg transition-all duration-300">
-      <Suspense fallback={null}>
-        <BookingParams onServiceSelect={setSelectedService} />
-      </Suspense>
       <CardHeader className="bg-gradient-to-r from-primary to-primary/80 text-white rounded-t-lg">
         <CardTitle>Book Your Appointment</CardTitle>
         <CardDescription className="text-white/90">
@@ -259,24 +251,27 @@ export default function BookingForm() {
                 </div>
               </div>
 
-              <div className="flex items-start space-x-2 mt-2">
+              <div className="flex items-center space-x-2">
                 <Checkbox
                   id="whatsapp"
                   checked={whatsappConfirm}
                   onCheckedChange={(checked) => setWhatsappConfirm(checked as boolean)}
                 />
-                <Label htmlFor="whatsapp" className="text-sm leading-tight">
-                  I consent to receive WhatsApp notifications for appointment confirmations and reminders
-                </Label>
+                <label
+                  htmlFor="whatsapp"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Send confirmation via Text <span className="text-xs text-gray-500">(Demo - no messages will be sent)</span>
+                </label>
               </div>
             </div>
 
             <Button
               type="submit"
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 py-6 rounded-full font-semibold text-lg shadow-md"
-              disabled={!date || !selectedTimeSlot || !selectedService || isSubmitting}
+              className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full shadow-md"
+              disabled={!date || !selectedTimeSlot || !selectedService || !name || !phone || !email || isSubmitting}
             >
-              {isSubmitting ? "Processing..." : "Book Appointment"}
+              {isSubmitting ? "Processing..." : "Preview Demo Confirmation"}
             </Button>
           </form>
         )}
